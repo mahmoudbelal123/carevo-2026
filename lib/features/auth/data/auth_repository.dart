@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' hide AuthException;
 import '../../../core/api/supabase_client.dart';
 import '../../../core/utils/error_handler.dart';
 import '../../../shared/models/profile_model.dart';

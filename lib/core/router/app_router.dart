@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import '../../features/auth/presentation/providers/auth_provider.dart';
+import '../../features/auth/data/auth_repository.dart';
 import '../../features/auth/presentation/screens/login_screen.dart';
 import '../../features/auth/presentation/screens/register_screen.dart';
 import '../../features/booking/presentation/screens/booking_screen.dart';
@@ -74,6 +74,13 @@ final routerProvider = Provider<GoRouter>((ref) {
           final orderId = state.pathParameters['orderId']!;
           return _slidePage(OrderDetailScreen(orderId: orderId), state);
         },
+      ),
+      GoRoute(
+        path: '/profile',
+        builder: (context, state) => Scaffold(
+          appBar: AppBar(title: const Text('Profile')),
+          body: const Center(child: Text('Profile Screen - Coming Soon')),
+        ),
       ),
     ],
   );
