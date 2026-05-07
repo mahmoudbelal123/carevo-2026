@@ -21,8 +21,13 @@ class SectionHeader extends StatelessWidget {
       children: [
         Text(title, style: theme.textTheme.headlineSmall),
         if (action != null)
-          GestureDetector(
+          TextButton(
             onTap: onActionTap,
+            style: TextButton.styleFrom(
+              minimumSize: Size.zero,
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            ),
             child: Text(
               action!,
               style: theme.textTheme.labelLarge?.copyWith(

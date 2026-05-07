@@ -28,8 +28,11 @@ class OrdersScreen extends ConsumerWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Icon(Icons.receipt_long_outlined,
-                      size: 72, color: AppColors.textDisabled),
+                  const Icon(
+                    Icons.receipt_long_outlined,
+                    size: 72,
+                    color: AppColors.textDisabled,
+                  ),
                   const SizedBox(height: 16),
                   Text(
                     'No orders yet',
@@ -88,57 +91,70 @@ class _OrderListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        margin: const EdgeInsets.only(bottom: 12),
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: AppColors.surface,
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: AppColors.divider),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    'Order #${order.id.substring(0, 8).toUpperCase()}',
-                    style: theme.textTheme.titleMedium,
+    return Material(
+      color: Colors.transparent,
+      borderRadius: BorderRadius.circular(18),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(18),
+        child: Container(
+          margin: const EdgeInsets.only(bottom: 12),
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: AppColors.surface,
+            borderRadius: BorderRadius.circular(18),
+            border: Border.all(color: AppColors.divider),
+            boxShadow: const [
+              BoxShadow(
+                color: AppColors.shadow,
+                blurRadius: 8,
+                offset: Offset(0, 2),
+              ),
+            ],
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      'Order #${order.id.substring(0, 8).toUpperCase()}',
+                      style: theme.textTheme.titleMedium,
+                    ),
                   ),
-                ),
-                OrderStatusChip(status: order.status),
-              ],
-            ),
-            const SizedBox(height: 10),
-            const Divider(height: 1),
-            const SizedBox(height: 10),
-            _OrderRow(
-              icon: Icons.location_on_outlined,
-              text: order.locationAddress.isNotEmpty
-                  ? order.locationAddress
-                  : 'No address provided',
-            ),
-            const SizedBox(height: 6),
-            _OrderRow(
-              icon: Icons.calendar_today_outlined,
-              text: DateFormat('MMM d, yyyy • h:mm a')
-                  .format(order.scheduledTime),
-            ),
-            const SizedBox(height: 6),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                _OrderRow(
-                  icon: Icons.payments_outlined,
-                  text: 'EGP ${order.totalPrice.toStringAsFixed(0)}',
-                ),
-                _PaymentBadge(status: order.paymentStatus),
-              ],
-            ),
-          ],
+                  OrderStatusChip(status: order.status),
+                ],
+              ),
+              const SizedBox(height: 10),
+              const Divider(height: 1),
+              const SizedBox(height: 10),
+              _OrderRow(
+                icon: Icons.location_on_outlined,
+                text: order.locationAddress.isNotEmpty
+                    ? order.locationAddress
+                    : 'No address provided',
+              ),
+              const SizedBox(height: 6),
+              _OrderRow(
+                icon: Icons.calendar_today_outlined,
+                text: DateFormat(
+                  'MMM d, yyyy • h:mm a',
+                ).format(order.scheduledTime),
+              ),
+              const SizedBox(height: 6),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  _OrderRow(
+                    icon: Icons.payments_outlined,
+                    text: 'EGP ${order.totalPrice.toStringAsFixed(0)}',
+                  ),
+                  _PaymentBadge(status: order.paymentStatus),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

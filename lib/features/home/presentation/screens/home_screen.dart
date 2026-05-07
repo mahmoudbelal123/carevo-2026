@@ -28,7 +28,7 @@ class HomeScreen extends ConsumerWidget {
         slivers: [
           // ── App bar with greeting ──
           SliverAppBar(
-            expandedHeight: 140,
+            expandedHeight: 190,
             pinned: true,
             backgroundColor: AppColors.primary,
             foregroundColor: AppColors.textOnPrimary,
@@ -45,7 +45,13 @@ class HomeScreen extends ConsumerWidget {
             flexibleSpace: FlexibleSpaceBar(
               collapseMode: CollapseMode.pin,
               background: Container(
-                color: AppColors.primary,
+                decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [AppColors.primary, AppColors.primaryDark],
+                  ),
+                ),
                 padding: const EdgeInsets.fromLTRB(20, 60, 20, 16),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -66,6 +72,35 @@ class HomeScreen extends ConsumerWidget {
                       'Book a car wash at your doorstep',
                       style: theme.textTheme.bodyMedium?.copyWith(
                         color: Colors.white70,
+                      ),
+                    ),
+                    const SizedBox(height: 14),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 14,
+                        vertical: 10,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withAlpha(28),
+                        borderRadius: BorderRadius.circular(14),
+                        border: Border.all(color: Colors.white24),
+                      ),
+                      child: Row(
+                        children: [
+                          const Icon(
+                            Icons.workspace_premium_outlined,
+                            size: 17,
+                            color: Colors.white,
+                          ),
+                          const SizedBox(width: 8),
+                          Text(
+                            'Professional care, eco-friendly products',
+                            style: theme.textTheme.bodySmall?.copyWith(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ],
@@ -94,7 +129,7 @@ class HomeScreen extends ConsumerWidget {
                           ),
                           const SizedBox(height: 16),
                           SizedBox(
-                            height: 140,
+                            height: 152,
                             child: ListView.separated(
                               scrollDirection: Axis.horizontal,
                               physics: const BouncingScrollPhysics(),
@@ -139,10 +174,7 @@ class HomeScreen extends ConsumerWidget {
                 delegate: SliverChildBuilderDelegate(
                   (ctx, i) => ServiceCard(
                     service: services[i],
-                    onTap: () => context.push(
-                      '/booking',
-                      extra: services[i],
-                    ),
+                    onTap: () => context.push('/booking', extra: services[i]),
                   ),
                   childCount: services.length,
                 ),
