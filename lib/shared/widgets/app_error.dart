@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../core/config/app_colors.dart';
+import '../../core/localization/app_localization.dart';
 
 class AppError extends StatelessWidget {
   const AppError({
@@ -33,7 +34,7 @@ class AppError extends StatelessWidget {
               ElevatedButton.icon(
                 onPressed: onRetry,
                 icon: const Icon(Icons.refresh, size: 18),
-                label: const Text('Try Again'),
+                label: Text(context.l10n.t('tryAgain')),
               ),
             ],
           ],

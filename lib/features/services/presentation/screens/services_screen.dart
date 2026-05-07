@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/config/app_colors.dart';
+import '../../../../core/localization/app_localization.dart';
 import '../../../../shared/widgets/app_error.dart';
 import '../../../../shared/widgets/app_loading.dart';
 import '../../../../shared/widgets/carevo_app_bar.dart';
@@ -14,10 +15,11 @@ class ServicesScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final servicesAsync = ref.watch(servicesProvider);
+    final l10n = context.l10n;
 
     return Scaffold(
       backgroundColor: AppColors.background,
-      appBar: const CarevoAppBar(title: 'Services'),
+      appBar: CarevoAppBar(title: l10n.t('services')),
       body: servicesAsync.when(
         data: (services) => RefreshIndicator(
           color: AppColors.primary,

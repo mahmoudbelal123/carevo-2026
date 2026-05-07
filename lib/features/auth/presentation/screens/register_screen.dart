@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/config/app_colors.dart';
+import '../../../../core/localization/app_localization.dart';
+import '../../../../shared/widgets/language_toggle_button.dart';
 import '../providers/auth_provider.dart';
 
 class RegisterScreen extends ConsumerStatefulWidget {
@@ -54,6 +56,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   Widget build(BuildContext context) {
     final isLoading = ref.watch(authNotifierProvider).isLoading;
     final theme = Theme.of(context);
+    final l10n = context.l10n;
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -64,6 +67,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
           icon: const Icon(Icons.arrow_back_ios, color: AppColors.primary),
           onPressed: () => context.pop(),
         ),
+        actions: const [LanguageToggleButton(isDark: false)],
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -73,10 +77,23 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Text('Create Account', style: theme.textTheme.headlineLarge),
+                Center(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: Image.asset(
+                      'assets/images/carevo_logo.png',
+                      width: 68,
+                      height: 68,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Text(l10n.t('createAccount'),
+                    style: theme.textTheme.headlineLarge),
                 const SizedBox(height: 8),
                 Text(
-                  'Fill in your details to get started',
+                  l10n.t('fillDetails'),
                   style: theme.textTheme.bodyMedium
                       ?.copyWith(color: AppColors.textMuted),
                 ),
@@ -84,37 +101,38 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                 TextFormField(
                   controller: _nameController,
                   textInputAction: TextInputAction.next,
-                  decoration: const InputDecoration(
-                    labelText: 'Full Name',
+                  decoration: InputDecoration(
+                    labelText: l10n.t('fullName'),
                     prefixIcon: Icon(Icons.person_outlined),
                   ),
                   validator: (v) =>
-                      (v == null || v.isEmpty) ? 'Name is required' : null,
+                      (v == null || v.isEmpty) ? l10n.t('nameRequired') : null,
                 ),
                 const SizedBox(height: 16),
                 TextFormField(
                   controller: _phoneController,
                   keyboardType: TextInputType.phone,
                   textInputAction: TextInputAction.next,
-                  decoration: const InputDecoration(
-                    labelText: 'Phone Number',
+                  decoration: InputDecoration(
+                    labelText: l10n.t('phoneNumber'),
                     prefixIcon: Icon(Icons.phone_outlined),
                   ),
-                  validator: (v) =>
-                      (v == null || v.length < 10) ? 'Enter a valid phone' : null,
+                  validator: (v) => (v == null || v.length < 10)
+                      ? l10n.t('validPhone')
+                      : null,
                 ),
                 const SizedBox(height: 16),
                 TextFormField(
                   controller: _emailController,
                   keyboardType: TextInputType.emailAddress,
                   textInputAction: TextInputAction.next,
-                  decoration: const InputDecoration(
-                    labelText: 'Email',
+                  decoration: InputDecoration(
+                    labelText: l10n.t('email'),
                     prefixIcon: Icon(Icons.email_outlined),
                   ),
                   validator: (v) {
-                    if (v == null || v.isEmpty) return 'Email is required';
-                    if (!v.contains('@')) return 'Enter a valid email';
+                    if (v == null || v.isEmpty) return l10n.t('emailRequired');
+                    if (!v.contains('@')) return l10n.t('enterValidEmail');
                     return null;
                   },
                 ),
@@ -125,19 +143,20 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                   textInputAction: TextInputAction.done,
                   onFieldSubmitted: (_) => _submit(),
                   decoration: InputDecoration(
-                    labelText: 'Password',
+                    labelText: l10n.t('password'),
                     prefixIcon: const Icon(Icons.lock_outlined),
                     suffixIcon: IconButton(
                       icon: Icon(_obscurePassword
                           ? Icons.visibility_outlined
                           : Icons.visibility_off_outlined),
-                      onPressed: () => setState(
-                          () => _obscurePassword = !_obscurePassword),
+                      onPressed: () =>
+                          setState(() => _obscurePassword = !_obscurePassword),
                     ),
                   ),
                   validator: (v) {
-                    if (v == null || v.isEmpty) return 'Password is required';
-                    if (v.length < 6) return 'Minimum 6 characters';
+                    if (v == null || v.isEmpty)
+                      return l10n.t('passwordRequired');
+                    if (v.length < 6) return l10n.t('minimum6');
                     return null;
                   },
                 ),
@@ -156,7 +175,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                                   AlwaysStoppedAnimation<Color>(Colors.white),
                             ),
                           )
-                        : const Text('Create Account'),
+                        : Text(l10n.t('createAccountBtn')),
                   ),
                 ),
                 const SizedBox(height: 24),

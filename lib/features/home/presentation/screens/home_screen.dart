@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/config/app_colors.dart';
+import '../../../../core/localization/app_localization.dart';
 import '../../../../shared/widgets/app_error.dart';
 import '../../../../shared/widgets/app_loading.dart';
+import '../../../../shared/widgets/language_toggle_button.dart';
 import '../../../../shared/widgets/offer_card.dart';
 import '../../../../shared/widgets/section_header.dart';
 import '../../../../shared/widgets/service_card.dart';
@@ -20,6 +22,7 @@ class HomeScreen extends ConsumerWidget {
     final offersAsync = ref.watch(offersProvider);
     final profileAsync = ref.watch(profileProvider);
     final theme = Theme.of(context);
+    final l10n = context.l10n;
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -33,6 +36,7 @@ class HomeScreen extends ConsumerWidget {
             backgroundColor: AppColors.primary,
             foregroundColor: AppColors.textOnPrimary,
             actions: [
+              const LanguageToggleButton(),
               IconButton(
                 icon: const Icon(Icons.notifications_outlined),
                 onPressed: () {},
@@ -59,7 +63,7 @@ class HomeScreen extends ConsumerWidget {
                   children: [
                     profileAsync.when(
                       data: (p) => Text(
-                        'Hello, ${p?.fullName.split(' ').first ?? 'there'} 👋',
+                        '${l10n.t('hello')}, ${p?.fullName.split(' ').first ?? l10n.t('there')} 👋',
                         style: theme.textTheme.headlineMedium?.copyWith(
                           color: Colors.white,
                         ),
@@ -69,7 +73,7 @@ class HomeScreen extends ConsumerWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      'Book a car wash at your doorstep',
+                      l10n.t('bookAtDoorstep'),
                       style: theme.textTheme.bodyMedium?.copyWith(
                         color: Colors.white70,
                       ),
@@ -94,7 +98,7 @@ class HomeScreen extends ConsumerWidget {
                           ),
                           const SizedBox(width: 8),
                           Text(
-                            'Professional care, eco-friendly products',
+                            l10n.t('proCareEco'),
                             style: theme.textTheme.bodySmall?.copyWith(
                               color: Colors.white,
                               fontWeight: FontWeight.w500,
@@ -123,8 +127,8 @@ class HomeScreen extends ConsumerWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           SectionHeader(
-                            title: 'Special Offers',
-                            action: 'See all',
+                            title: l10n.t('specialOffers'),
+                            action: l10n.t('seeAll'),
                             onActionTap: () {},
                           ),
                           const SizedBox(height: 16),
@@ -150,8 +154,8 @@ class HomeScreen extends ConsumerWidget {
 
                   // ── Services ──
                   SectionHeader(
-                    title: 'Our Services',
-                    action: 'View all',
+                    title: l10n.t('ourServices'),
+                    action: l10n.t('viewAll'),
                     onActionTap: () => context.push('/services'),
                   ),
                   const SizedBox(height: 16),

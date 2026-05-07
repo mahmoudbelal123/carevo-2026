@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import '../../core/config/app_colors.dart';
+import '../../core/localization/app_localization.dart';
 import '../models/service_model.dart';
 
 class ServiceCard extends StatelessWidget {
@@ -12,6 +13,7 @@ class ServiceCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = context.l10n;
     return Material(
       color: Colors.transparent,
       borderRadius: BorderRadius.circular(18),
@@ -90,7 +92,7 @@ class ServiceCard extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          'EGP ${service.price.toStringAsFixed(0)}',
+                          '${service.price.toStringAsFixed(0)} EGP',
                           style: theme.textTheme.titleMedium?.copyWith(
                             color: AppColors.primary,
                             fontWeight: FontWeight.w700,
@@ -114,7 +116,7 @@ class ServiceCard extends StatelessWidget {
                               ),
                               const SizedBox(width: 4),
                               Text(
-                                '${service.durationMinutes} min',
+                                '${service.durationMinutes} ${l10n.locale.languageCode == 'ar' ? 'د' : 'min'}',
                                 style: theme.textTheme.labelSmall?.copyWith(
                                   color: AppColors.textMedium,
                                   fontWeight: FontWeight.w600,

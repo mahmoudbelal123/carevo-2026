@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../core/config/app_colors.dart';
+import 'language_toggle_button.dart';
 
 class CarevoAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CarevoAppBar({
@@ -10,6 +11,7 @@ class CarevoAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.leading,
     this.showBackButton = true,
     this.backgroundColor = AppColors.primary,
+    this.showLanguageToggle = true,
   });
 
   final String? title;
@@ -18,6 +20,7 @@ class CarevoAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Widget? leading;
   final bool showBackButton;
   final Color backgroundColor;
+  final bool showLanguageToggle;
 
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
@@ -43,7 +46,10 @@ class CarevoAppBar extends StatelessWidget implements PreferredSizeWidget {
                   ),
                 )
               : null),
-      actions: actions,
+      actions: [
+        if (showLanguageToggle) const LanguageToggleButton(),
+        ...?actions,
+      ],
     );
   }
 }
