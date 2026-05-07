@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../core/config/app_colors.dart';
+import '../../core/localization/app_localization.dart';
 
 class MainShell extends ConsumerWidget {
   const MainShell({super.key, required this.child});
@@ -9,6 +10,7 @@ class MainShell extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = context.l10n;
     final location = GoRouterState.of(context).matchedLocation;
     final currentIndex = _indexFromLocation(location);
 
@@ -31,21 +33,21 @@ class MainShell extends ConsumerWidget {
           child: BottomNavigationBar(
             currentIndex: currentIndex,
             onTap: (i) => _onNavTap(context, i),
-            items: const [
+            items: [
               BottomNavigationBarItem(
                 icon: Icon(Icons.home_outlined),
                 activeIcon: Icon(Icons.home_rounded),
-                label: 'Home',
+                label: l10n.t('home'),
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.local_car_wash_outlined),
                 activeIcon: Icon(Icons.local_car_wash_rounded),
-                label: 'Services',
+                label: l10n.t('services'),
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.receipt_long_outlined),
                 activeIcon: Icon(Icons.receipt_long_rounded),
-                label: 'Orders',
+                label: l10n.t('orders'),
               ),
             ],
           ),

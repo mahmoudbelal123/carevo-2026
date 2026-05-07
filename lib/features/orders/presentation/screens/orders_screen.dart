@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import '../../../../core/config/app_colors.dart';
+import '../../../../core/localization/app_localization.dart';
 import '../../../../shared/models/order_model.dart';
 import '../../../../shared/widgets/app_error.dart';
 import '../../../../shared/widgets/app_loading.dart';
@@ -17,10 +18,11 @@ class OrdersScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final ordersAsync = ref.watch(ordersProvider);
     final theme = Theme.of(context);
+    final l10n = context.l10n;
 
     return Scaffold(
       backgroundColor: AppColors.background,
-      appBar: const CarevoAppBar(title: 'My Orders'),
+      appBar: CarevoAppBar(title: l10n.t('myOrders')),
       body: ordersAsync.when(
         data: (orders) {
           if (orders.isEmpty) {
@@ -35,14 +37,14 @@ class OrdersScreen extends ConsumerWidget {
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    'No orders yet',
+                    l10n.t('noOrdersYet'),
                     style: theme.textTheme.headlineSmall?.copyWith(
                       color: AppColors.textMuted,
                     ),
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'Book your first car wash!',
+                    l10n.t('bookFirstWash'),
                     style: theme.textTheme.bodyMedium?.copyWith(
                       color: AppColors.textMuted,
                     ),
@@ -50,7 +52,7 @@ class OrdersScreen extends ConsumerWidget {
                   const SizedBox(height: 24),
                   ElevatedButton(
                     onPressed: () => context.go('/home'),
-                    child: const Text('Browse Services'),
+                    child: Text(l10n.t('browseServices')),
                   ),
                 ],
               ),
@@ -68,6 +70,7 @@ class OrdersScreen extends ConsumerWidget {
               itemCount: orders.length,
               itemBuilder: (ctx, i) => _OrderListItem(
                 order: orders[i],
+                l10n: l10n,
                 onTap: () => context.push('/orders/${orders[i].id}'),
               ),
             ),
@@ -84,9 +87,11 @@ class OrdersScreen extends ConsumerWidget {
 }
 
 class _OrderListItem extends StatelessWidget {
-  const _OrderListItem({required this.order, required this.onTap});
+  const _OrderListItem(
+      {required this.order, required this.onTap, required this.l10n});
   final OrderModel order;
   final VoidCallback onTap;
+  final AppLocalization l10n;
 
   @override
   Widget build(BuildContext context) {
@@ -119,7 +124,7 @@ class _OrderListItem extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Text(
-                      'Order #${order.id.substring(0, 8).toUpperCase()}',
+                      '${l10n.t('order')} #${order.id.substring(0, 8).toUpperCase()}',
                       style: theme.textTheme.titleMedium,
                     ),
                   ),
@@ -133,13 +138,14 @@ class _OrderListItem extends StatelessWidget {
                 icon: Icons.location_on_outlined,
                 text: order.locationAddress.isNotEmpty
                     ? order.locationAddress
-                    : 'No address provided',
+                    : l10n.t('noAddressProvided'),
               ),
               const SizedBox(height: 6),
               _OrderRow(
                 icon: Icons.calendar_today_outlined,
                 text: DateFormat(
                   'MMM d, yyyy • h:mm a',
+                  Localizations.localeOf(context).languageCode,
                 ).format(order.scheduledTime),
               ),
               const SizedBox(height: 6),
@@ -191,11 +197,15 @@ class _PaymentBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final (label, color) = switch (status) {
-      PaymentStatus.unpaid => ('Unpaid', AppColors.error),
-      PaymentStatus.pendingVerification => ('Verifying', AppColors.warning),
-      PaymentStatus.paid => ('Paid', AppColors.success),
-      PaymentStatus.refunded => ('Refunded', AppColors.info),
+      PaymentStatus.unpaid => (l10n.t('unpaid'), AppColors.error),
+      PaymentStatus.pendingVerification => (
+          l10n.t('verifying'),
+          AppColors.warning
+        ),
+      PaymentStatus.paid => (l10n.t('paid'), AppColors.success),
+      PaymentStatus.refunded => (l10n.t('refunded'), AppColors.info),
     };
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),

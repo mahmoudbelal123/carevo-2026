@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/config/app_colors.dart';
+import '../../../../core/localization/app_localization.dart';
+import '../../../../shared/widgets/language_toggle_button.dart';
 import '../providers/auth_provider.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
@@ -47,6 +49,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   Widget build(BuildContext context) {
     final isLoading = ref.watch(authNotifierProvider).isLoading;
     final theme = Theme.of(context);
+    final l10n = context.l10n;
 
     return Scaffold(
       body: Container(
@@ -91,18 +94,21 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             width: 80,
                             height: 80,
                             decoration: BoxDecoration(
-                              color: AppColors.primary,
-                              borderRadius: BorderRadius.circular(22),
+                              borderRadius: BorderRadius.circular(18),
                             ),
-                            child: const Icon(
-                              Icons.local_car_wash,
-                              color: Colors.white,
-                              size: 44,
+                            clipBehavior: Clip.hardEdge,
+                            child: Image.asset(
+                              'assets/images/carevo_logo.png',
+                              fit: BoxFit.cover,
                             ),
+                          ),
+                          const Align(
+                            alignment: Alignment.centerRight,
+                            child: LanguageToggleButton(isDark: false),
                           ),
                           const SizedBox(height: 16),
                           Text(
-                            'CAREVO',
+                            l10n.t('appName'),
                             style: theme.textTheme.displayMedium?.copyWith(
                               color: AppColors.primary,
                               fontWeight: FontWeight.w900,
@@ -111,7 +117,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           ),
                           const SizedBox(height: 6),
                           Text(
-                            'Premium Mobile Car Wash',
+                            l10n.t('premiumMobileWash'),
                             style: theme.textTheme.bodyMedium?.copyWith(
                               color: AppColors.textMuted,
                             ),
@@ -121,13 +127,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     ),
                     const SizedBox(height: 36),
                     Text(
-                      'Welcome back',
+                      l10n.t('welcomeBack'),
                       style: theme.textTheme.headlineMedium,
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      'Sign in to continue',
+                      l10n.t('signInToContinue'),
                       style: theme.textTheme.bodyMedium?.copyWith(
                         color: AppColors.textMuted,
                       ),
@@ -138,13 +144,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       controller: _emailController,
                       keyboardType: TextInputType.emailAddress,
                       textInputAction: TextInputAction.next,
-                      decoration: const InputDecoration(
-                        labelText: 'Email',
+                      decoration: InputDecoration(
+                        labelText: l10n.t('email'),
                         prefixIcon: Icon(Icons.email_outlined),
                       ),
                       validator: (v) {
-                        if (v == null || v.isEmpty) return 'Email is required';
-                        if (!v.contains('@')) return 'Enter a valid email';
+                        if (v == null || v.isEmpty)
+                          return l10n.t('emailRequired');
+                        if (!v.contains('@')) return l10n.t('enterValidEmail');
                         return null;
                       },
                     ),
@@ -155,7 +162,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       textInputAction: TextInputAction.done,
                       onFieldSubmitted: (_) => _submit(),
                       decoration: InputDecoration(
-                        labelText: 'Password',
+                        labelText: l10n.t('password'),
                         prefixIcon: const Icon(Icons.lock_outlined),
                         suffixIcon: IconButton(
                           icon: Icon(
@@ -170,8 +177,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       ),
                       validator: (v) {
                         if (v == null || v.isEmpty)
-                          return 'Password is required';
-                        if (v.length < 6) return 'Minimum 6 characters';
+                          return l10n.t('passwordRequired');
+                        if (v.length < 6) return l10n.t('minimum6');
                         return null;
                       },
                     ),
@@ -191,7 +198,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                   ),
                                 ),
                               )
-                            : const Text('Sign In'),
+                            : Text(l10n.t('signIn')),
                       ),
                     ),
                     const SizedBox(height: 14),
@@ -199,13 +206,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          "Don't have an account? ",
+                          l10n.t('dontHaveAccount'),
                           style: theme.textTheme.bodyMedium,
                         ),
                         GestureDetector(
                           onTap: () => context.push('/register'),
                           child: Text(
-                            'Register',
+                            l10n.t('register'),
                             style: theme.textTheme.bodyMedium?.copyWith(
                               color: AppColors.primary,
                               fontWeight: FontWeight.w700,
@@ -225,7 +232,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         ),
                         const SizedBox(width: 6),
                         Text(
-                          'Secure sign in powered by Supabase',
+                          l10n.t('secureSupabase'),
                           style: theme.textTheme.labelMedium,
                         ),
                       ],

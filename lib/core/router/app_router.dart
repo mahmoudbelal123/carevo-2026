@@ -11,6 +11,7 @@ import '../../features/orders/presentation/screens/orders_screen.dart';
 import '../../features/payment/presentation/screens/payment_screen.dart';
 import '../../features/services/presentation/screens/services_screen.dart';
 import '../../shared/models/service_model.dart';
+import '../localization/app_localization.dart';
 import '../shell/main_shell.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
@@ -77,10 +78,15 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(
         path: '/profile',
-        builder: (context, state) => Scaffold(
-          appBar: AppBar(title: const Text('Profile')),
-          body: const Center(child: Text('Profile Screen - Coming Soon')),
-        ),
+        builder: (context, state) {
+          final l10n = context.l10n;
+          return Scaffold(
+            appBar: AppBar(title: Text(l10n.t('profile'))),
+            body: Center(
+              child: Text('${l10n.t('profile')} - ${l10n.t('comingSoon')}'),
+            ),
+          );
+        },
       ),
     ],
   );

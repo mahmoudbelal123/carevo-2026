@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../core/config/app_colors.dart';
+import '../../core/localization/app_localization.dart';
 import '../models/order_model.dart';
 
 class OrderStatusChip extends StatelessWidget {
@@ -8,7 +9,7 @@ class OrderStatusChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final (label, color) = _labelAndColor(status);
+    final (label, color) = _labelAndColor(context, status);
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
       decoration: BoxDecoration(
@@ -28,14 +29,19 @@ class OrderStatusChip extends StatelessWidget {
     );
   }
 
-  static (String, Color) _labelAndColor(OrderStatus status) {
+  static (String, Color) _labelAndColor(
+      BuildContext context, OrderStatus status) {
+    final l10n = context.l10n;
     return switch (status) {
-      OrderStatus.pending => ('Pending', AppColors.statusPending),
-      OrderStatus.confirmed => ('Confirmed', AppColors.statusConfirmed),
-      OrderStatus.onTheWay => ('On The Way', AppColors.statusOnTheWay),
-      OrderStatus.inProgress => ('In Progress', AppColors.statusInProgress),
-      OrderStatus.completed => ('Completed', AppColors.statusCompleted),
-      OrderStatus.cancelled => ('Cancelled', AppColors.statusCancelled),
+      OrderStatus.pending => (l10n.t('pending'), AppColors.statusPending),
+      OrderStatus.confirmed => (l10n.t('confirmed'), AppColors.statusConfirmed),
+      OrderStatus.onTheWay => (l10n.t('onTheWay'), AppColors.statusOnTheWay),
+      OrderStatus.inProgress => (
+          l10n.t('inProgress'),
+          AppColors.statusInProgress
+        ),
+      OrderStatus.completed => (l10n.t('completed'), AppColors.statusCompleted),
+      OrderStatus.cancelled => (l10n.t('cancelled'), AppColors.statusCancelled),
     };
   }
 }
