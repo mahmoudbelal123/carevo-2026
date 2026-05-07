@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'core/api/supabase_client.dart';
@@ -47,12 +46,14 @@ class CarevoApp extends ConsumerWidget {
       theme: AppTheme.light,
       locale: locale,
       supportedLocales: AppLocalization.supportedLocales,
-      localizationsDelegates: const [
-        AppLocalizationDelegate(),
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
+      localizationsDelegates: const [AppLocalizationDelegate()],
+      builder: (context, child) {
+        final isArabic = locale.languageCode == 'ar';
+        return Directionality(
+          textDirection: isArabic ? TextDirection.rtl : TextDirection.ltr,
+          child: child ?? const SizedBox.shrink(),
+        );
+      },
       routerConfig: router,
     );
   }

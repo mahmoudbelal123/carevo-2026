@@ -9,8 +9,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_localizations:
-    sdk: flutter
 
   # Supabase (auth + database + storage)
   supabase_flutter: ^2.5.9
