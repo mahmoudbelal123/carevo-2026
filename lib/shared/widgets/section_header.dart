@@ -22,7 +22,7 @@ class SectionHeader extends StatelessWidget {
         Text(title, style: theme.textTheme.headlineSmall),
         if (action != null)
           TextButton(
-            onTap: onActionTap,
+            onPressed: onActionTap,
             style: TextButton.styleFrom(
               minimumSize: Size.zero,
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
