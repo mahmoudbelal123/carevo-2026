@@ -1,21 +1,45 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
+class ServiceModel {
+  final String id;
+  final String name;
+  final String description;
+  final double price;
+  final int durationMinutes;
+  final String imageUrl;
+  final bool isActive;
+  final int sortOrder;
 
-part 'service_model.freezed.dart';
-part 'service_model.g.dart';
+  const ServiceModel({
+    required this.id,
+    required this.name,
+    this.description = '',
+    required this.price,
+    this.durationMinutes = 30,
+    this.imageUrl = '',
+    this.isActive = true,
+    this.sortOrder = 0,
+  });
 
-@freezed
-class ServiceModel with _$ServiceModel {
-  const factory ServiceModel({
-    required String id,
-    required String name,
-    @Default('') String description,
-    required double price,
-    @Default(30) int durationMinutes,
-    @Default('') String imageUrl,
-    @Default(true) bool isActive,
-    @Default(0) int sortOrder,
-  }) = _ServiceModel;
+  factory ServiceModel.fromJson(Map<String, dynamic> json) {
+    return ServiceModel(
+      id: json['id'] as String,
+      name: json['name'] as String,
+      description: json['description'] as String? ?? '',
+      price: (json['price'] as num).toDouble(),
+      durationMinutes: json['duration_minutes'] as int? ?? 30,
+      imageUrl: json['image_url'] as String? ?? '',
+      isActive: json['is_active'] as bool? ?? true,
+      sortOrder: json['sort_order'] as int? ?? 0,
+    );
+  }
 
-  factory ServiceModel.fromJson(Map<String, dynamic> json) =>
-      _$ServiceModelFromJson(json);
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'name': name,
+        'description': description,
+        'price': price,
+        'duration_minutes': durationMinutes,
+        'image_url': imageUrl,
+        'is_active': isActive,
+        'sort_order': sortOrder,
+      };
 }

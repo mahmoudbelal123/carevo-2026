@@ -16,21 +16,25 @@ class OrderRepository {
       final userId = supabase.auth.currentUser?.id;
       if (userId == null) throw const AuthException();
 
+      // Start with the base query and filters
       var query = supabase
           .from('orders')
           .select('*, order_status_logs(*)')
-          .eq('user_id', userId)
+          .eq('user_id', userId);
+
+      // Add optional filters
+      if (statusFilter != null) {
+        query = query.eq('status', statusFilter.name);
+      }
+
+      // Finally add transforms (order and range)
+      final raw = await query
           .order('created_at', ascending: false)
           .range(
             page * AppConfig.orderPageSize,
             (page + 1) * AppConfig.orderPageSize - 1,
           );
 
-      if (statusFilter != null) {
-        query = query.eq('status', statusFilter.name);
-      }
-
-      final raw = await query;
       return await compute(_parseOrders, raw);
     } on AppException {
       rethrow;

@@ -1,30 +1,46 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
+class ConfigEntry {
+  final String key;
+  final String value;
+  final DateTime? updatedAt;
 
-part 'config_model.freezed.dart';
-part 'config_model.g.dart';
+  const ConfigEntry({
+    required this.key,
+    required this.value,
+    this.updatedAt,
+  });
 
-@freezed
-class ConfigEntry with _$ConfigEntry {
-  const factory ConfigEntry({
-    required String key,
-    required String value,
-    DateTime? updatedAt,
-  }) = _ConfigEntry;
+  factory ConfigEntry.fromJson(Map<String, dynamic> json) {
+    return ConfigEntry(
+      key: json['key'] as String,
+      value: json['value'] as String,
+      updatedAt: json['updated_at'] != null 
+          ? DateTime.parse(json['updated_at'] as String) 
+          : null,
+    );
+  }
 
-  factory ConfigEntry.fromJson(Map<String, dynamic> json) =>
-      _$ConfigEntryFromJson(json);
+  Map<String, dynamic> toJson() => {
+        'key': key,
+        'value': value,
+        'updated_at': updatedAt?.toIso8601String(),
+      };
 }
 
 /// Parsed, typed representation of all dynamic config keys.
-@freezed
-class AppConfig with _$AppConfig {
-  const factory AppConfig({
-    @Default('') String instapayNumber,
-    @Default('') String instapayLink,
-    @Default('') String paymentInstructions,
-    @Default('20') String serviceRadius,
-    @Default('08:00-22:00') String workingHours,
-  }) = _AppConfig;
+class AppConfig {
+  final String instapayNumber;
+  final String instapayLink;
+  final String paymentInstructions;
+  final String serviceRadius;
+  final String workingHours;
+
+  const AppConfig({
+    this.instapayNumber = '',
+    this.instapayLink = '',
+    this.paymentInstructions = '',
+    this.serviceRadius = '20',
+    this.workingHours = '08:00-22:00',
+  });
 
   factory AppConfig.fromEntries(List<ConfigEntry> entries) {
     final map = {for (final e in entries) e.key: e.value};
@@ -37,6 +53,21 @@ class AppConfig with _$AppConfig {
     );
   }
 
-  factory AppConfig.fromJson(Map<String, dynamic> json) =>
-      _$AppConfigFromJson(json);
+  factory AppConfig.fromJson(Map<String, dynamic> json) {
+    return AppConfig(
+      instapayNumber: json['instapayNumber'] as String? ?? '',
+      instapayLink: json['instapayLink'] as String? ?? '',
+      paymentInstructions: json['paymentInstructions'] as String? ?? '',
+      serviceRadius: json['serviceRadius'] as String? ?? '20',
+      workingHours: json['workingHours'] as String? ?? '08:00-22:00',
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+        'instapayNumber': instapayNumber,
+        'instapayLink': instapayLink,
+        'paymentInstructions': paymentInstructions,
+        'serviceRadius': serviceRadius,
+        'workingHours': workingHours,
+      };
 }
